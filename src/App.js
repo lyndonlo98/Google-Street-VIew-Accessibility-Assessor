@@ -15,11 +15,19 @@ import MapContainer from "./map.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    visibility: "Hidden",
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
+    marginLeft: '20px',
     width: 320,
+  },
+  miniSearchBar: {
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: '10px',
+    marginLeft: '20px',
+    width: 200,
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -33,8 +41,9 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
   },
   bottomNavigation: {
-    marginTop: "5px",
-    width:325,
+    marginTop: "2px",
+    marginLeft: "20px",
+    width:327,
   },
 }));
 
@@ -88,8 +97,36 @@ function App() {
           <BottomNavigationAction label="Plan a route" icon={<EditIcon />} />
           <BottomNavigationAction label="Get directions" icon={<DirectionsIcon />} />
         </BottomNavigation>
+
+        <Paper component="form" className={classes.miniSearchBar}>
+      <InputBase
+        className={classes.input}
+        placeholder="Start Location"
+        inputProps={{ 'aria-label': 'Start Location' }}
+      />
+      <IconButton type="submit" className={classes.iconButton} aria-label="search">
+        <SearchIcon />
+      </IconButton>
+    </Paper>
+
+
+    <Paper component="form" className={classes.miniSearchBar}>
+      <InputBase
+        className={classes.input}
+        placeholder="Destination"
+        inputProps={{ 'aria-label': 'Destination' }}
+      />
+      <IconButton type="submit" className={classes.iconButton} aria-label="search">
+        <SearchIcon />
+      </IconButton>
+    </Paper>
+
+       
+
       </Box>
     </Box>
+
+    
     
   );
 }
