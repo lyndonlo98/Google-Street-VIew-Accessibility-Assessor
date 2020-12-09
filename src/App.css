@@ -13,6 +13,22 @@
   }
 }
 
+#showOverlayButton {
+  margin-top: 4%;
+  background-color: #5bad0a;
+}
+#showOverlayButtonHidden {
+  margin-top: 4%;
+  background-color: #5bad0a;
+  visibility: hidden;
+}
+
+#hideOverlayButton {
+  float: right;
+}
+#backArrowIcon {
+  color: #8FD14F;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,38 +40,29 @@
   color: white;
 }
 
-.map {
-  width: '100%';
-  height: '100%';
-  /* position: relative; */
+#leftOverlay {
+  position: absolute;
+  display: block;
+  top: 0px;
+  width: 22%;
+  height: 90%;
+  margin-top: 4%;
+  background-color: rgba(230, 230, 230, .7);
+  transition: 1s;
 }
 
-.left-overlay {
+#hiddenLeftOverlay {
   position: absolute;
+  display: block;
+  visibility: hidden;
   top: 0px;
-  width: 25%;
+  width: 0%;
   height: 90%;
   margin-top: 4%;
   background-color: rgba(230, 230, 230, .7);
 }
 
-#searchBar{
-  margin-top: 3%;
-  margin-left: 5%;
-  width: 70%;
-  height: 3%;
-  opacity: 100%;
-}
 
-nav.nav.nav-tabs{
-background-color: #8FD14F;
-}
-
-.a#tabs-tab{
-padding: 10px;
-margin: 50px;
-background-color: #61dafb;
-}
 .opaque-text{
   position: absolute;
   display: flex;
@@ -67,7 +74,6 @@ background-color: #61dafb;
   height: 100%;
   opacity: 1;
   background: transparent;
-  color: #8FD14F;
   font-size: 32px;
   font-weight: 600;
 }
