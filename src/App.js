@@ -2,18 +2,20 @@ import "./App.css";
 import "./map.js";
 import React from 'react';
 
-import {Divider, makeStyles, Paper, IconButton, InputBase, Button, Box, BottomNavigation, BottomNavigationAction, Hidden  } from '@material-ui/core';
+import {makeStyles, Paper, IconButton, InputBase, Button, Box, BottomNavigation, BottomNavigationAction  } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import EditIcon from '@material-ui/icons/Edit';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import { useState } from 'react';
 import MapContainer from "./map.js";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // visibility: "Hidden",
+    visibility: "Hidden",
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
@@ -37,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+
+  const [isHidden, setVisibility] = useState(true);
+
   const classes = useStyles();
   return (
     <Box>
@@ -45,17 +50,19 @@ function App() {
       <Button 
         variant="contained"
         color="primary"
-        id="showOverlayButton"
+        id={isHidden? "showOverlayButton":"showOverlayButtonHidden"}
         endIcon={<ArrowForwardIosIcon/>}
+        onClick={() => {setVisibility(!isHidden)}}
         >
           View Accessibility
       </Button>
 
 
       <Box
-        id="leftOverlay">
+        id = {isHidden? "hiddenLeftOverlay": "leftOverlay" }>
       <IconButton
-        id="hideOverlayButton">
+        id="hideOverlayButton"
+        onClick={() => {setVisibility(!isHidden)}}>
       <ArrowBackIosIcon
         id="backArrowIcon"/>
       </IconButton>

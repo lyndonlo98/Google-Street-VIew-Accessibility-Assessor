@@ -17,6 +17,11 @@
   margin-top: 4%;
   background-color: #5bad0a;
 }
+#showOverlayButtonHidden {
+  margin-top: 4%;
+  background-color: #5bad0a;
+  visibility: hidden;
+}
 
 #hideOverlayButton {
   float: right;
@@ -39,6 +44,16 @@
   position: absolute;
   display: block;
   /* visibility: hidden; */
+  top: 0px;
+  width: 25%;
+  height: 90%;
+  margin-top: 4%;
+  background-color: rgba(230, 230, 230, .7);
+}
+#hiddenLeftOverlay {
+  position: absolute;
+  display: block;
+  visibility: hidden;
   top: 0px;
   width: 25%;
   height: 90%;
