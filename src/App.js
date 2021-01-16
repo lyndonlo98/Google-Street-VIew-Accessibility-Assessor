@@ -2,16 +2,22 @@ import "./App.css";
 import "./map.js";
 import React from 'react';
 
-import {makeStyles, Paper, IconButton, InputBase, Button, Box, BottomNavigation, BottomNavigationAction  } from '@material-ui/core';
+import {makeStyles, Paper, IconButton, InputBase, Button, Box, BottomNavigation, BottomNavigationAction, createMuiTheme  } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import EditIcon from '@material-ui/icons/Edit';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { useState } from 'react';
 import MapContainer from "./map.js";
-
+import { lightGreen } from "@material-ui/core/colors";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CustomButton from './components/button';
+import MiniSearchBar from './components/miniSearchBar';
+import Navigation from './components/navigation';
+import MainSearchBar from './components/mainSearchBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "20px",
     width:327,
   },
+  button: {
+    margin: theme.spacing(1),
+    color: lightGreen,
+  },
 }));
 
 function App() {
@@ -55,79 +65,59 @@ function App() {
   return (
     <Box>
       <MapContainer />
-
-      <Button 
+      <Button
         variant="contained"
         color="primary"
-        id={isHidden? "showOverlayButton":"showOverlayButtonHidden"}
-        endIcon={<ArrowForwardIosIcon/>}
-        onClick={() => {setVisibility(!isHidden)}}
-        >
-          View Accessibility
+        id={isHidden ? "showOverlayButton" : "showOverlayButtonHidden"}
+        endIcon={<ArrowForwardIosIcon />}
+        onClick={() => {
+          setVisibility(!isHidden);
+        }}
+      >
+        View Accessibility
       </Button>
 
+      <Box id={isHidden ? "hiddenLeftOverlay" : "leftOverlay"}>
+        <IconButton
+          id="hideOverlayButton"
+          onClick={() => {
+            setVisibility(!isHidden);
+          }}
+        >
+          <ArrowBackIosIcon id="backArrowIcon" />
+        </IconButton>
 
-      <Box
-        id = {isHidden? "hiddenLeftOverlay": "leftOverlay" }>
-      <IconButton
-        id="hideOverlayButton"
-        onClick={() => {setVisibility(!isHidden)}}>
-      <ArrowBackIosIcon
-        id="backArrowIcon"/>
-      </IconButton>
+        <MiniSearchBar
+          paperClass={classes.miniSearchBar}
+          inputClass={classes.input}
+          placeholder="Start Location"
+          iconClass={classes.iconButton}
+          icon={<SearchIcon />}
+        />
 
-      <Paper component="form" className={classes.root}>
-      <IconButton className={classes.iconButton} aria-label="menu">
-        <MenuIcon />
-      </IconButton>
-      <InputBase
-        className={classes.input}
-        placeholder="View Accessibility in an Area"
-        inputProps={{ 'aria-label': 'View accessibility in an area' }}
-      />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
+        <MiniSearchBar
+          paperClass={classes.miniSearchBar}
+          inputClass={classes.input}
+          placeholder="Destination"
+          iconClass={classes.iconButton}
+          icon={<SearchIcon />}
+        />
 
+        <CustomButton
+          icon={<SettingsIcon />}
+          id="settingsButton"
+          class={classes.button}
+          text="Settings"
+        />
 
-        <BottomNavigation
-          className={classes.bottomNavigation}
-          showLabels>
-          <BottomNavigationAction label="Plan a route" icon={<EditIcon />} />
-          <BottomNavigationAction label="Get directions" icon={<DirectionsIcon />} />
-        </BottomNavigation>
-
-        <Paper component="form" className={classes.miniSearchBar}>
-      <InputBase
-        className={classes.input}
-        placeholder="Start Location"
-        inputProps={{ 'aria-label': 'Start Location' }}
-      />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
-
-
-    <Paper component="form" className={classes.miniSearchBar}>
-      <InputBase
-        className={classes.input}
-        placeholder="Destination"
-        inputProps={{ 'aria-label': 'Destination' }}
-      />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
-
-       
-
+        <CustomButton
+          icon={<ExitToAppIcon />}
+          id="signInButton"
+          class={classes.button}
+          text="Sign in"
+        />
       </Box>
     </Box>
-
-    
-    
   );
 }
 
