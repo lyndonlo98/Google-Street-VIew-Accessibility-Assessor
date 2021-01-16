@@ -2,13 +2,10 @@ import "./App.css";
 import "./map.js";
 import React from 'react';
 
-import {makeStyles, Paper, IconButton, InputBase, Button, Box, BottomNavigation, BottomNavigationAction, createMuiTheme  } from '@material-ui/core';
+import {makeStyles, IconButton, Button, Box  } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import EditIcon from '@material-ui/icons/Edit';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { useState } from 'react';
 import MapContainer from "./map.js";
@@ -16,8 +13,6 @@ import { lightGreen } from "@material-ui/core/colors";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CustomButton from './components/button';
 import MiniSearchBar from './components/miniSearchBar';
-import Navigation from './components/navigation';
-import MainSearchBar from './components/mainSearchBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
