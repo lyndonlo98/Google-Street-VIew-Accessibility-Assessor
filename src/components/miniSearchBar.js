@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Paper, IconButton, InputBase } from "@material-ui/core";
+import { GoogleApiWrapper } from 'google-maps-react';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -23,7 +24,7 @@ const MiniSearchBar = (props) => {
       // </IconButton>
   //   </Paper>
   // );
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState('');
 
   const handleChange = (address) => {
     setAddress(address);
@@ -86,5 +87,6 @@ const MiniSearchBar = (props) => {
     </PlacesAutocomplete>
   );
 };
-
-export default MiniSearchBar;
+export default GoogleApiWrapper({
+  libraries: ["places"]
+})(MiniSearchBar);
