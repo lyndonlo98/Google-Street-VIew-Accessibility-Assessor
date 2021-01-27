@@ -24,7 +24,7 @@ const loadScript = (url, callback) => {
   document.getElementsByTagName("head")[0].appendChild(script);
 };
 
-function handleScriptLoad(updateSource, updateDestination, sourceRef, destinationRef) {
+function handleScriptLoad(updateAddress, updateSource, updateDestination, sourceRef, destinationRef) {
   sourceAutoComplete = new window.google.maps.places.Autocomplete(
     sourceRef.current,
     { }
@@ -35,23 +35,25 @@ function handleScriptLoad(updateSource, updateDestination, sourceRef, destinatio
   );
   sourceAutoComplete.setFields(["address_components", "formatted_address"]);
   sourceAutoComplete.addListener("place_changed", () =>
-    handlePlaceSelect(updateSource, 'source')
+    handlePlaceSelect(updateAddress, updateSource, 'source')
   );
   destinationAutoComplete.setFields(["address_components", "formatted_address"]);
   destinationAutoComplete.addListener("place_changed", () =>
-    handlePlaceSelect(updateDestination, 'destination')
+    handlePlaceSelect(updateAddress, updateDestination, 'destination')
   );
 }
 
-async function handlePlaceSelect(updateQuery, srcOrDest) {
+async function handlePlaceSelect(updateAddress, updateQuery, srcOrDest) {
   if (srcOrDest === 'source') {
     const addressObject = sourceAutoComplete.getPlace();
     const source = addressObject.formatted_address;
+    updateAddress({type: "sourceChange", payload: source});
     updateQuery(source);
-    console.log(addressObject);
+    console.table(addressObject);
   } else {
     const addressObject = destinationAutoComplete.getPlace();
     const dest = addressObject.formatted_address;
+    updateAddress({type: "destinationChange", payload: dest});
     updateQuery(dest);
     console.log(addressObject);
   }
@@ -68,7 +70,7 @@ const SearchLocationInput = () => {
   useEffect(() => {
     loadScript(
       `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
-      () => handleScriptLoad(setSource, setDestination, sourceRef, destinationRef)
+      () => handleScriptLoad(addressDispatch,setSource, setDestination, sourceRef, destinationRef)
     );
   }, []);
 
@@ -80,7 +82,6 @@ const SearchLocationInput = () => {
           onChange={event => {
             const payload = event.target.value;
             setSource(payload);
-            addressDispatch({type: "sourceChange", payload: payload});
           }}
           placeholder={"Enter source"}
           value={source}
@@ -92,7 +93,6 @@ const SearchLocationInput = () => {
           onChange={event => {
             const payload = event.target.value;
             setDestination(payload);
-            addressDispatch({type: "destinationChange", payload: payload});
           }}
           placeholder={"Enter destination"}
           value={destination}
