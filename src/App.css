@@ -36,6 +36,8 @@ body::-webkit-scrollbar-thumb {
   border-radius: 20px;
 }
 
+button:focus { outline: none; }
+
 ul {
   list-style: none;
   margin: 0;
@@ -48,6 +50,44 @@ a {
 }
 
 /* Top Navigation Bar */
+
+/* <div className=header */
+/* .header {
+  display:inline;
+  width: 100%;
+  margin
+} */
+
+.website-icon {
+  padding: 5px;
+  padding-right: 0;
+  margin: 2px;
+  align-items: center;
+  justify-content: center;
+  transition: filter 300ms;
+  width:70px;
+  height: 70px;
+}
+
+.website-icon:hover {
+  filter: brightness(1.2);
+}
+
+.website-icon svg { 
+  fill: var(--bg);
+  width: 60px;
+  height: 60px;
+  margin-left: 10px;
+  margin-top: 5px;
+  position: relative;
+  top: 10px;
+}
+
+.navbar-brand {
+  font-size: 30px;
+  float: left;
+  display: inline;
+}
 
 /* <nav> */
 .navbar {
@@ -131,7 +171,6 @@ a {
   margin-right: 0.5rem;
 }
 
-
 .menu-item .icon-button:hover {
   filter: none;
 }
@@ -201,7 +240,6 @@ a {
   transform: translateX(-110%);
   transition: all var(--speed) ease;
 }
-
 
 .menu-secondary-enter {
   transform: translateX(110%);

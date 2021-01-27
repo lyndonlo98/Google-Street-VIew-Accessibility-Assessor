@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
+import { AddressContext } from '../../App';
+
 const containerStyle = {
-  height: '94.2vh',
+  height: '93.9vh',
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523
+  lat: 45.4197217,
+  lng: -75.707717
 };
 
 function MapContainer() {
+  const { addresses, addressDispatch } = useContext(AddressContext);
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyB9zu0JV9YNb-O3RAIQ4rzXWTMEf44OdF0"
+      googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_API_KEY}`}
     >
       <GoogleMap
         mapContainerStyle={containerStyle}

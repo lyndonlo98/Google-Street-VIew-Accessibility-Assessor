@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 
-let autoComplete;
+import { AddressContext } from '../../App';
+
+let sourceAutoComplete;
+let destinationAutoComplete;
 
 const loadScript = (url, callback) => {
   let script = document.createElement("script");
@@ -21,43 +24,80 @@ const loadScript = (url, callback) => {
   document.getElementsByTagName("head")[0].appendChild(script);
 };
 
-function handleScriptLoad(updateQuery, autoCompleteRef) {
-  autoComplete = new window.google.maps.places.Autocomplete(
-    autoCompleteRef.current,
-    { types: ["(cities)"], componentRestrictions: { country: "us" } }
+function handleScriptLoad(updateSource, updateDestination, sourceRef, destinationRef) {
+  sourceAutoComplete = new window.google.maps.places.Autocomplete(
+    sourceRef.current,
+    { }
   );
-  autoComplete.setFields(["address_components", "formatted_address"]);
-  autoComplete.addListener("place_changed", () =>
-    handlePlaceSelect(updateQuery)
+  destinationAutoComplete = new window.google.maps.places.Autocomplete(
+    destinationRef.current,
+    { }
+  );
+  sourceAutoComplete.setFields(["address_components", "formatted_address"]);
+  sourceAutoComplete.addListener("place_changed", () =>
+    handlePlaceSelect(updateSource, 'source')
+  );
+  destinationAutoComplete.setFields(["address_components", "formatted_address"]);
+  destinationAutoComplete.addListener("place_changed", () =>
+    handlePlaceSelect(updateDestination, 'destination')
   );
 }
 
-async function handlePlaceSelect(updateQuery) {
-  const addressObject = autoComplete.getPlace();
-  const query = addressObject.formatted_address;
-  updateQuery(query);
-  console.log(addressObject);
+async function handlePlaceSelect(updateQuery, srcOrDest) {
+  if (srcOrDest === 'source') {
+    const addressObject = sourceAutoComplete.getPlace();
+    const source = addressObject.formatted_address;
+    updateQuery(source);
+    console.log(addressObject);
+  } else {
+    const addressObject = destinationAutoComplete.getPlace();
+    const dest = addressObject.formatted_address;
+    updateQuery(dest);
+    console.log(addressObject);
+  }
 }
 
-const SearchLocationInput = ({placeholderText}) => {
-  const [query, setQuery] = useState("");
-  const autoCompleteRef = useRef(null);
+const SearchLocationInput = () => {
+  const [source, setSource] = useState("");
+  const [destination, setDestination] = useState("");
+  const sourceRef = useRef(null);
+  const destinationRef = useRef(null);
+
+  const { addresses, addressDispatch } = useContext(AddressContext);
 
   useEffect(() => {
     loadScript(
-      `https://maps.googleapis.com/maps/api/js?key=AIzaSyB9zu0JV9YNb-O3RAIQ4rzXWTMEf44OdF0&libraries=places`,
-      () => handleScriptLoad(setQuery, autoCompleteRef)
+      `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
+      () => handleScriptLoad(setSource, setDestination, sourceRef, destinationRef)
     );
   }, []);
 
   return (
-    <div className="search-location-input">
-      <input
-        ref={autoCompleteRef}
-        onChange={event => setQuery(event.target.value)}
-        placeholder={placeholderText}
-        value={query}
-      />
+    <div>
+      <div className="search-location-input">
+        <input
+          ref={sourceRef}
+          onChange={event => {
+            const payload = event.target.value;
+            setSource(payload);
+            addressDispatch({type: "sourceChange", payload: payload});
+          }}
+          placeholder={"Enter source"}
+          value={source}
+        />
+      </div>
+      <div className="search-location-input">
+        <input
+          ref={destinationRef}
+          onChange={event => {
+            const payload = event.target.value;
+            setDestination(payload);
+            addressDispatch({type: "destinationChange", payload: payload});
+          }}
+          placeholder={"Enter destination"}
+          value={destination}
+        />
+      </div>
     </div>
   );
 }
