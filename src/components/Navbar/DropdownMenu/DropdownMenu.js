@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { ReactComponent as CogIcon } from '../../../icons/cog.svg';
 import { ReactComponent as ChevronIcon } from '../../../icons/cog.svg';
-import { ReactComponent as ArrowIcon } from '../../../icons/cog.svg';
+import { ReactComponent as ArrowIcon } from '../../../icons/arrow.svg';
 import { ReactComponent as BoltIcon } from '../../../icons/cog.svg';
 
 import { CSSTransition } from 'react-transition-group';
@@ -90,11 +90,6 @@ const DropdownMenu = () => {
             </DropdownItem>
             <SearchLocationInput 
               onChange={() => null}
-              placeholderText={"Enter Source Address"} 
-            />
-            <SearchLocationInput 
-              onChange={() => null}
-              placeholderText={"Enter Destination Address"} 
             />
             <CustomButton
               text={"Plan Trip"}

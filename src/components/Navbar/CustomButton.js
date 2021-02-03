@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 
-function CustomButton({id, icon, text}){
+const CustomButton = ({id, icon, text}) => {
     return (
       // <Button
       //   style={{height: '40px'}}

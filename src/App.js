@@ -1,23 +1,44 @@
 import './App.css';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 
-import React from 'react';
+import React, { useReducer } from 'react';
 
 import Navbar from './components/Navbar/Navbar';
 import NavItem from './components/Navbar/NavItem';
 import DropdownMenu from './components/Navbar/DropdownMenu/DropdownMenu';
 import MapContainer from './components/Map/map';
 
+export const AddressContext = React.createContext();
+
+const initialState = {
+  source: "",
+  destination: ""
+}
+
+const reducer = (state, action) => {
+  switch(action.type) {
+      case 'sourceChange':
+          return { ...state, source: action.payload };
+      case 'destinationChange':
+        return { ...state, destination: action.payload };
+      default:
+          return state;
+  }
+}
+
 function App() {
+  const [addresses, dispatch] = useReducer(reducer, initialState);
   return (
-    <div>
-      <Navbar>
-        <NavItem icon={<CaretIcon />}>
-          <DropdownMenu></DropdownMenu>
-        </NavItem>
-      </Navbar>
-      <MapContainer/>
-    </div>
+    <AddressContext.Provider value={{addresses: addresses, addressDispatch: dispatch}}>
+      <div>
+        <Navbar>
+          <NavItem icon={<CaretIcon />}>
+            <DropdownMenu ></DropdownMenu>
+          </NavItem>
+        </Navbar>
+        <MapContainer/>
+      </div>
+    </AddressContext.Provider>
     
   );
 }
