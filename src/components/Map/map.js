@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
-
-import { AddressContext } from '../../App';
+import Route from './../Routes/route';
 
 const containerStyle = {
   height: '93.9vh',
@@ -16,7 +15,6 @@ const center = {
 
 
 function MapContainer() {
-  const { addresses, addressDispatch } = useContext(AddressContext);
   return (
     <LoadScript
       googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_API_KEY}`}
@@ -27,7 +25,7 @@ function MapContainer() {
         zoom={mapZoom}
       >
         { /* Child components, such as markers, info windows, etc. */ }
-        <></>
+        <Route/>
       </GoogleMap>
     </LoadScript>
   )
