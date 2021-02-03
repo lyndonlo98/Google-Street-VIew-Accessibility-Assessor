@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { GoogleMap, LoadScript, DirectionsService } from '@react-google-maps/api';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 import { AddressContext } from '../../App';
 
@@ -14,12 +14,6 @@ const center = {
   lng: -75.707717
 };
 
-const directionsRequest = {
-  origin: '279 Laurier Ave W Suite 100, Ottawa, ON K1P 5J9',
-  destination: '267 Bank St, Ottawa, ON K2P 2L6',
-  provideRouteAlternatives: false,
-  travelMode: 'WALKING'
-}
 
 function MapContainer() {
   const { addresses, addressDispatch } = useContext(AddressContext);
