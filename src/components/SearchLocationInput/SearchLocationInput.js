@@ -70,7 +70,7 @@ const SearchLocationInput = () => {
   useEffect(() => {
     loadScript(
       `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
-      () => handleScriptLoad(addressDispatch,setSource, setDestination, sourceRef, destinationRef)
+      () => handleScriptLoad(addressDispatch, setSource, setDestination, sourceRef, destinationRef)
     );
   }, []);
 
