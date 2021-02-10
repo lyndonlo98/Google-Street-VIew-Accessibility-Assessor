@@ -4,7 +4,7 @@ import { ReactComponent as WheelchairIcon } from '../../icons/wheelchair.svg';
 const Navbar = (props) => {
     return (
       <div className="header">
-        <a class="navbar-brand" href="javascript:void(0);">
+        <a className="navbar-brand" href="javascript:void(0);">
           <span className="website-icon">{<WheelchairIcon/>}</span>
           SoAccessible
         </a>
