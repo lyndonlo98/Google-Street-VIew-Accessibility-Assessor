@@ -50,39 +50,48 @@ function MapContainer() {
   });
 
   return (
-    <LoadScript
-      googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_API_KEY}`}
-    >
+    <LoadScript googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_API_KEY}`}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
         zoom={mapZoom}
-        onLoad={map => {
-          console.log('DirectionsRenderer onLoad map: ', map)
+        onLoad={(map) => {
+          console.log("DirectionsRenderer onLoad map: ", map);
         }}
       >
-          <DirectionsService
-            options={directionsRequest(addresses.source,addresses.destination)}
-            callback={res => directionsCallback(res)}
-            onLoad={directionsService => {
-              console.log('DirectionsService onLoad directionsService: ', directionsService)
+        <DirectionsService
+          options={directionsRequest(
+            addresses.source === ""
+              ? "1125 Colonel By Dr, Ottawa, ON K1S 5B6, Canada"
+              : addresses.source,
+            addresses.destination === ""
+              ? "464 Rideau St, Ottawa, ON K1N 5Z3, Canada"
+              : addresses.destination
+          )}
+          callback={(res) => directionsCallback(res)}
+          onLoad={(directionsService) => {
+            console.log(
+              "DirectionsService onLoad directionsService: ",
+              directionsService
+            );
+          }}
+        />
+
+        {
+          // (response !== null) &&
+          <DirectionsRenderer
+            options={response && { directions: response }}
+            onLoad={(directionsRenderer) => {
+              console.log(
+                "DirectionsRenderer onLoad directionsRenderer: ",
+                directionsRenderer
+              );
             }}
           />
-
-        
-          
-          {
-            // (response !== null) &&
-            <DirectionsRenderer 
-              options={response && {directions: response}}
-              onLoad={directionsRenderer => {
-                console.log('DirectionsRenderer onLoad directionsRenderer: ', directionsRenderer)
-              }}
-            />
-          }
+        }
       </GoogleMap>
     </LoadScript>
-  )
+  );
 }
 
 export default React.memo(MapContainer)
