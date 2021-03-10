@@ -17,7 +17,7 @@ const directionsRequest = (start,end) => {
   return {
     origin: start,
     destination: end,
-    provideRouteAlternatives: false,
+    provideRouteAlternatives: true,
     travelMode: "WALKING",
   };
 }
@@ -34,6 +34,26 @@ function MapContainer() {
   const directionsCallback = useCallback((res) => {
     console.log("in callback")
     console.log(res)
+
+    /**
+     * CHANGES TO RETREIEVE THE POINTS WHERE WE WILL SHOW THE BUBBLE HEADS
+     */
+    console.log(res.routes[0].overview_path);
+    var intersections=[];
+    var pathCheckpoints=[];
+
+    res.routes[0].legs[0].steps.map((step) =>
+      intersections = [...intersections, [step.start_point.lat(),step.start_point.lng()]]
+    )
+    console.log(intersections);
+
+    res.routes[0].overview_path.map((point) =>
+    pathCheckpoints = [...pathCheckpoints, [point.lat(),point.lng()]]
+  )
+  console.log(pathCheckpoints);
+    //_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+    
     if (!res) return;
 
     console.log('duhdudh');
