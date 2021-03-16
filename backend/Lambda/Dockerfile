@@ -21,4 +21,5 @@ COPY handler.py handler.py
 COPY Validation.py Validation.py
 COPY ./GSVFetching/ImageFetching.py ./GSVFetching/ImageFetching.py
 COPY ./ImageProcessing/ImagePreprocessing.py ./ImageProcessing/ImagePreprocessing.py
+COPY ./model_final-40k.pth ../model_final-40k.pth
 CMD ["handler.goodbye"]
