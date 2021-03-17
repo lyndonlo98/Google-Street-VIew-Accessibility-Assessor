@@ -1,6 +1,8 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, Circle } from '@react-google-maps/api';
 import { AddressContext } from '../../App';
+import { CustomDialog } from 'react-st-modal';
+import AccessibilitySummaryDialog from '../AccessibilitySummaryDialog/AccessibilitySummaryDialog';
 
 const containerStyle = {
   height: '93.9vh',
@@ -28,12 +30,12 @@ function MapContainer() {
 
   console.log("rendderrr");
 
-  useEffect(() => {  
+  useEffect(() => {
   }, [addresses]);
 
   const directionsCallback = useCallback((res) => {
     console.log("in callback")
-    console.log(res)
+    console.log(res.routes[0].overview_path)
     if (!res) return;
 
     console.log('duhdudh');
@@ -61,12 +63,8 @@ function MapContainer() {
       >
         <DirectionsService
           options={directionsRequest(
-            addresses.source === ""
-              ? "1125 Colonel By Dr, Ottawa, ON K1S 5B6, Canada"
-              : addresses.source,
-            addresses.destination === ""
-              ? "464 Rideau St, Ottawa, ON K1N 5Z3, Canada"
-              : addresses.destination
+            addresses.source || "1125 Colonel By Dr, Ottawa, ON K1S 5B6, Canada",
+            addresses.destination || "464 Rideau St, Ottawa, ON K1N 5Z3, Canada"
           )}
           callback={(res) => directionsCallback(res)}
           onLoad={(directionsService) => {
@@ -89,6 +87,34 @@ function MapContainer() {
             }}
           />
         }
+        {response && response.routes[0].overview_path.map((latlng, idx) => (
+          <Circle
+            key={idx}
+            center={{
+              lat: latlng.lat(),
+              lng: latlng.lng()
+            }}
+            radius={20}
+            onClick={async () => {
+              const result = await CustomDialog(
+                <AccessibilitySummaryDialog
+                  lat={latlng.lat()}
+                  lng={latlng.lng()}
+                />,
+                {
+                  title: 'Accessibility Summary',
+                  showCloseIcon: true,
+                }
+              );
+            }}
+            options={{
+              strokeColor: "#FF0000",
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: "#FF0000",
+              fillOpacity: 0.35}}
+          />
+        ))}
       </GoogleMap>
     </LoadScript>
   );
