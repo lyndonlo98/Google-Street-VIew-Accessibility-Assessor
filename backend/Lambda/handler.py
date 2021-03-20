@@ -12,11 +12,11 @@ import numpy as np
 import base64
 import boto3
 import io
-import pickle 
+import pickle
+import torch 
 from io import BytesIO
 
 import logging
-
 
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
@@ -27,45 +27,9 @@ import requests
 import numpy as np
 from detectron2 import model_zoo
 
-def hello(event, context):
-    #images = GSVFetching.ImageFetching.getGSVImage(params := {'lat':35.696233, 'long':139.570431, 'heading': 112.5})
-    print("Received event: " + json.dumps(event, indent=2))
-    statusCode, errMsg = Validation.validateParams(event['queryStringParameters'])
-
-    if statusCode != 200:
-        response = {
-            'statusCode': statusCode,
-            'body': errMsg
-        }
-        return response
-    
-    images = GSVFetching.ImageFetching.getGSVImage(event['queryStringParameters'])
-    img_str = ""
-
-    im = Image.open(BytesIO(images[0]))
-    r, g, b = im.split()
-    rgb = [b, r, g]
-    im = Image.merge("RGB", (b, g, r))
-
-    buffered = io.BytesIO()
-    im.save(buffered, format="JPEG")
-    img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-
-    print(img_str) 
-
-    response = {
-        'isBase64Encoded': True,
-        'headers': {'Content-Type': 'image/jpeg'},
-        'statusCode': 200,
-        'body': img_str
-    }
-
-    return response
-
 def goodbye(event, context):
     logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    logger.info("hi")
+
     logger.info("Received event: " + json.dumps(event, indent=2))
     statusCode, errMsg = Validation.validateParams(event['queryStringParameters'])
 
@@ -104,6 +68,11 @@ def goodbye(event, context):
 
     scoring_result = predictor(image)
 
+    instances = scoring_result["instances"]
+    scores = instances.get_fields()["scores"].tolist()
+    pred_classes = instances.get_fields()["pred_classes"].tolist()
+    pred_boxes = instances.get_fields()["pred_boxes"].tensor.tolist()
+
     v = Visualizer(image[:, :, ::-1],
         MetadataCatalog.get("curbs_train"),
         scale=0.5, 
@@ -123,31 +92,28 @@ def goodbye(event, context):
     img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
     logger.info('created image string')
 
-    # instances = scoring_result["instances"]
-    # scores = instances.get_fields()["scores"].tolist()
-    # pred_classes = instances.get_fields()["pred_classes"].tolist()
-    # pred_boxes = instances.get_fields()["pred_boxes"].tensor.tolist()
+    instances = scoring_result["instances"]
+    scores = instances.get_fields()["scores"].tolist()
+    pred_classes = instances.get_fields()["pred_classes"].tolist()
+    pred_boxes = instances.get_fields()["pred_boxes"].tensor.tolist()
+
+    responseBody = {
+        "img": img_str,
+        "pred_classes": pred_classes
+    }
 
     response = {
         'isBase64Encoded': True,
-        'headers': {'Content-Type': 'image/jpeg'},
+        'headers': {
+            'Content-Type': 'image/jpeg',
+            'Access-Control-Allow-Headers':'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+            'Access-Control-Allow-Origin': '*',
+            "Access-Control-Allow-Credentials" : True,
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
         'statusCode': 200,
         'body': img_str
     }
-
-    # bodyOfResponse = {
-    #     "scores": scores,
-    #     "pred_classes": pred_classes,
-    #     "pred_boxes" : pred_boxes,
-    #     "classes": classes
-    # }
-
-    # response = {
-    #     # 'isBase64Encoded': True,
-    #     'headers': {'Content-Type': 'application/json'},
-    #     'statusCode': 200,
-    #     'body': json.dumps(bodyOfResponse)
-    # }
 
     return response
 

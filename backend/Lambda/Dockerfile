@@ -12,7 +12,7 @@ RUN pip install cython
 RUN pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 RUN pip install google_streetview
 # Detectron2 - CPU copy
-RUN python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/index.html
+RUN python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.7/index.html
 
 # Development packages
 RUN pip install requests opencv-python
@@ -21,5 +21,5 @@ COPY handler.py handler.py
 COPY Validation.py Validation.py
 COPY ./GSVFetching/ImageFetching.py ./GSVFetching/ImageFetching.py
 COPY ./ImageProcessing/ImagePreprocessing.py ./ImageProcessing/ImagePreprocessing.py
-COPY ./model_final-40k.pth ../model_final-40k.pth
+COPY ./model_final-65k.pth ../model_final-40k.pth
 CMD ["handler.goodbye"]
