@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 
 import React, { useReducer } from 'react';

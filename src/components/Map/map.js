@@ -27,6 +27,7 @@ const directionsRequest = (start,end) => {
 function MapContainer() {
   const [response, setResponse] = useState(null);
   const { addresses } = useContext(AddressContext);
+  const colours = ['#f55742','#f5ef42', '#42f578', ]
 
   console.log("rendderrr");
 
@@ -87,8 +88,9 @@ function MapContainer() {
             }}
           />
         }
-        {response && response.routes[0].overview_path.map((latlng, idx) => (
-          <Circle
+        {response && response.routes[0].overview_path.map((latlng, idx) => {
+          let colorIdx = idx % 3;
+          return (<Circle
             key={idx}
             center={{
               lat: latlng.lat(),
@@ -104,17 +106,18 @@ function MapContainer() {
                 {
                   title: 'Accessibility Summary',
                   showCloseIcon: true,
+                  className: 'dialog'
                 }
               );
             }}
             options={{
-              strokeColor: "#FF0000",
+              strokeColor: colours[colorIdx],
               strokeOpacity: 0.8,
               strokeWeight: 2,
-              fillColor: "#FF0000",
+              fillColor: colours[colorIdx],
               fillOpacity: 0.35}}
-          />
-        ))}
+          />)
+        })}
       </GoogleMap>
     </LoadScript>
   );

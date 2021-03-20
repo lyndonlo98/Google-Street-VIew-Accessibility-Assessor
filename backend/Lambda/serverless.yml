@@ -22,13 +22,13 @@ provider:
   name: aws
   ecr:
     images:
-      detectron2inference:
+      detectron2inf:
         path: ./
   profile: soaccessible
 
 functions:
   inference:
-    image: detectron2inference
+    image: detectron2inf
     events:
       - http:
           path: predict
