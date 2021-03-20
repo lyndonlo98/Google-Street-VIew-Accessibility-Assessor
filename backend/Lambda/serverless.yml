@@ -1,0 +1,49 @@
+# serverless.yml
+plugins:
+  - serverless-domain-manager
+  # - serverless-python-requirements
+custom:
+  customDomain:
+    domainName: api.soaccessible.com
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  pythonRequirements:
+    dockerizePip: non-linux
+
+service: serverless-http
+
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
+
+provider:
+  name: aws
+  ecr:
+    images:
+      detectron2inf:
+        path: ./
+  profile: soaccessible
+
+functions:
+  inference:
+    image: detectron2inf
+    events:
+      - http:
+          path: predict
+          method: get
+  # hello:
+  #   image:
+  #     name: detectron2inference
+  #   events:
+  #     - http:
+  #         path: hello
+  #         method: get
+  # goodbye:
+  #   image:
+  #     name: detectron2inference
+  #   events:
+  #     - http:
+  #         path: goodbye
+  #         method: get
