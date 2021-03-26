@@ -3,6 +3,7 @@ import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, Circle } 
 import { AddressContext } from '../../App';
 import { CustomDialog } from 'react-st-modal';
 import AccessibilitySummaryDialog from '../AccessibilitySummaryDialog/AccessibilitySummaryDialog';
+import { SquareFootRounded } from '@material-ui/icons';
 
 const containerStyle = {
   height: '93.9vh',
@@ -24,8 +25,19 @@ const directionsRequest = (start,end) => {
   };
 }
 
+function getDistance(point1, point2) {
+  //console.log(point1);
+
+  const a = (point2.lat() - point1.lat());
+  const b = (point1.lng() -point2.lng());
+  
+  //console.log(Math.sqrt(a*a + b*b))
+  return Math.sqrt(a*a + b*b)
+}
+
 function MapContainer() {
   const [response, setResponse] = useState(null);
+  const [waypoints, setWaypoints] = useState([]);
   const { addresses } = useContext(AddressContext);
   const colours = ['#f55742','#f5ef42', '#42f578', ]
 
@@ -35,21 +47,23 @@ function MapContainer() {
   }, [addresses]);
 
   const directionsCallback = useCallback((res) => {
-    console.log("in callback")
-    console.log(res.routes[0].overview_path)
-    if (!res) return;
+    if (res && res?.status === "OK") {
+      let newWaypoints = [];
+      const totalWaypoints = res.routes[0].overview_path;
+      console.log(totalWaypoints);
 
-    console.log('duhdudh');
-    console.log(response); 
-    console.log(addresses);
-    console.log(res === response);
-    if (response && res.request.destination.query === response.request.destination.query &&
-      res.request.origin.query === response.request.origin.query) {
-      console.log('we are returning')
+      newWaypoints.push(totalWaypoints[0]);
+      
+      for (let i = 1; i < totalWaypoints.length; i++) {
+        if(getDistance(newWaypoints[newWaypoints.length-1], totalWaypoints[i]) > 0.0007) {
+          newWaypoints.push(totalWaypoints[i]);
+        }
+      }
+      setWaypoints(newWaypoints);
+      setResponse(res);
       return;
     }
-
-    res && res?.status === "OK" ? setResponse(res) : console.log(res.status);
+    console.log(res);
   });
 
   return (
@@ -88,7 +102,7 @@ function MapContainer() {
             }}
           />
         }
-        {response && response.routes[0].overview_path.map((latlng, idx) => {
+        {response && waypoints.map((latlng, idx) => {
           let colorIdx = idx % 3;
           return (<Circle
             key={idx}
