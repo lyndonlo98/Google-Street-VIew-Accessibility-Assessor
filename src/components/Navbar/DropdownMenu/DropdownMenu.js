@@ -91,9 +91,6 @@ const DropdownMenu = () => {
             <SearchLocationInput 
               onChange={() => null}
             />
-            <CustomButton
-              text={"Plan Trip"}
-            />
           </div>
         </CSSTransition>
       </div>
