@@ -9,6 +9,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import CustomButton from '../CustomButton';
 import SearchLocationInput from '../../SearchLocationInput/SearchLocationInput'
+import SignInInput from '../../Auth/SignInInput'
 
 const DropdownMenu = () => {
     const [activeMenu, setActiveMenu] = useState('main');
@@ -44,7 +45,10 @@ const DropdownMenu = () => {
           unmountOnExit
           onEnter={calcHeight}>
           <div className="menu">
-            <DropdownItem>My Profile</DropdownItem>
+            <DropdownItem
+            goToMenu="myProfile">
+              My Profile
+            </DropdownItem>
             <DropdownItem
               leftIcon={<CogIcon />}
               rightIcon={<ChevronIcon />}
@@ -57,10 +61,25 @@ const DropdownMenu = () => {
               goToMenu="directions">
               Directions
             </DropdownItem>
-  
           </div>
         </CSSTransition>
   
+        <CSSTransition
+          in={activeMenu === 'myProfile'}
+          timeout={500}
+          classNames="menu-secondary"
+          unmountOnExit
+          onEnter={calcHeight}>
+          <div className="menu">
+            <DropdownItem goToMenu="main" leftIcon={<ArrowIcon />}>
+              <h2>Sign In</h2>
+            </DropdownItem>
+            <SignInInput 
+              onChange={() => null}
+            />
+          </div>
+        </CSSTransition>
+
         <CSSTransition
           in={activeMenu === 'settings'}
           timeout={500}
