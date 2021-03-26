@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 
+import CustomButton from '../Navbar/CustomButton';
+
 import { AddressContext } from '../../App';
 
 let sourceAutoComplete;
@@ -98,6 +100,9 @@ const SearchLocationInput = () => {
           value={destination}
         />
       </div>
+      <CustomButton
+        text={"Plan Trip"}
+      />
     </div>
   );
 }

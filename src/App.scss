@@ -157,6 +157,17 @@ a {
   transition: filter 300ms linear, transform 0.15s ease-in;
 }
 
+.dropdown-button {
+  // transition: filter 300ms linear, transform 0.15s ease-in;
+  transition: transform 0.15s ease-in;
+  transform-origin: 50% 50%;
+}
+
+.dropdown-button:hover {
+  filter: brightness(1.2);
+  transform: scale(1.2);
+}
+
 .icon-button:hover {
   filter: brightness(1.2);
   transform: scale(1.2);
