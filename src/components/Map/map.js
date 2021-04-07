@@ -34,7 +34,9 @@ function getDistance(point1, point2) {
   //console.log(Math.sqrt(a*a + b*b))
   return Math.sqrt(a*a + b*b)
 }
-
+function calculateScore() {
+  console.log("score");
+}
 function MapContainer() {
   const [response, setResponse] = useState(null);
   const [waypoints, setWaypoints] = useState([]);
@@ -60,6 +62,25 @@ function MapContainer() {
         }
       }
       setWaypoints(newWaypoints);
+
+      // waypoints.forEach((latlng, idx) => {
+      //   const headings = [0, 45, 90, 135, 180, 225, 270, 315]
+      //     let requests = headings.map(elem => (
+      //         fetch(
+      //             `https://97y4zwfpya.execute-api.us-east-1.amazonaws.com/dev/predict?lat=${latlng.lat()}&long=${latlng.lng()}&heading=${elem}`,
+      //             {
+      //               method: "GET",
+      //             }
+      //         )
+      //     ))
+      //     Promise.all(requests)
+      //       .then(responses => {
+      //         console.log(response);
+      //         calculateScore();
+      //       })
+      //       .catch(err => console.error(err));
+      //       setTimeout(10000);
+      // })
       setResponse(res);
       return;
     }
@@ -102,6 +123,8 @@ function MapContainer() {
             }}
           />
         }
+        
+
         {response && waypoints.map((latlng, idx) => {
           let colorIdx = idx % 3;
           return (<Circle

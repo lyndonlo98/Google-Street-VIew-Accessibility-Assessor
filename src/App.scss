@@ -18,6 +18,7 @@ img {
   width: 320px;
 }
 
+
 :root {
   --bg:  #b0f69e;
   --bg-transparent:#b0f69e70;
@@ -88,6 +89,16 @@ a {
   border-radius: 10px;
 }
 
+.website-icon-container {
+  transition: 600ms;
+  width: 3.5rem;
+  min-width: 3.5rem;
+  height: 3.5rem;
+  min-height: 3.5rem;
+  width:70px;
+  height: 70px;
+}
+
 .website-icon {
   padding: 5px;
   padding-right: 0;
@@ -116,7 +127,8 @@ a {
 .navbar-brand {
   font-size: 30px;
   float: left;
-  display: inline;
+  line-height: 2.5;
+  display: flex;
 }
 
 /* <nav> */
