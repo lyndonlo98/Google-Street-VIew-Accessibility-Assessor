@@ -7,7 +7,6 @@ import { ReactComponent as BoltIcon } from '../../../icons/cog.svg';
 
 import { CSSTransition } from 'react-transition-group';
 
-import CustomButton from '../CustomButton';
 import SearchLocationInput from '../../SearchLocationInput/SearchLocationInput'
 
 const DropdownMenu = () => {
@@ -27,7 +26,7 @@ const DropdownMenu = () => {
     function DropdownItem(props) {
       return (
         <a href="#" className="menu-item" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}>
-          <span className="icon-button hover-button">{props.leftIcon}</span>
+          <span className="icon-button">{props.leftIcon}</span>
           {props.children}
           <span className="icon-right">{props.rightIcon}</span>
         </a>
