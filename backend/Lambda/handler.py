@@ -53,7 +53,7 @@ def goodbye(event, context):
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 5
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7  # set threshold for this model
     cfg.MODEL.WEIGHTS = "../model_final-40k.pth"
     cfg.MODEL.DEVICE = "cpu" # we use a CPU Detectron copy
     classes = MetadataCatalog.get("curbs_train").thing_classes = ["AccessibleCurb", 
@@ -102,14 +102,22 @@ def goodbye(event, context):
         "pred_classes": pred_classes
     }
 
+    newClasses = []
+
+    for i in range(len(pred_classes)):
+        newClasses.append(classes[pred_classes[i]])
+
+    predictedStrings = ','.join(newClasses);
+
     response = {
         'isBase64Encoded': True,
         'headers': {
             'Content-Type': 'image/jpeg',
-            'Access-Control-Allow-Headers':'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+            'Access-Control-Allow-Headers':'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,x-custom-message',
             'Access-Control-Allow-Origin': '*',
             "Access-Control-Allow-Credentials" : True,
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+            'x-custom-message': predictedStrings
         },
         'statusCode': 200,
         'body': img_str

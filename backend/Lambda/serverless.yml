@@ -20,6 +20,7 @@ package:
 
 provider:
   name: aws
+  stage: dev
   ecr:
     images:
       detectron2inf:
