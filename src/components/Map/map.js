@@ -26,24 +26,17 @@ const directionsRequest = (start,end) => {
 }
 
 function getDistance(point1, point2) {
-  //console.log(point1);
 
   const a = (point2.lat() - point1.lat());
   const b = (point1.lng() -point2.lng());
   
-  //console.log(Math.sqrt(a*a + b*b))
   return Math.sqrt(a*a + b*b)
 }
-function calculateScore() {
-  console.log("score");
-}
+
 function MapContainer() {
   const [response, setResponse] = useState(null);
   const [waypoints, setWaypoints] = useState([]);
   const { addresses } = useContext(AddressContext);
-  const colours = ['#f55742','#f5ef42', '#42f578', ]
-
-  console.log("rendderrr");
 
   useEffect(() => {
   }, [addresses]);
@@ -61,31 +54,12 @@ function MapContainer() {
           newWaypoints.push(totalWaypoints[i]);
         }
       }
+      console.log(newWaypoints)
       setWaypoints(newWaypoints);
-
-      // waypoints.forEach((latlng, idx) => {
-      //   const headings = [0, 45, 90, 135, 180, 225, 270, 315]
-      //     let requests = headings.map(elem => (
-      //         fetch(
-      //             `https://97y4zwfpya.execute-api.us-east-1.amazonaws.com/dev/predict?lat=${latlng.lat()}&long=${latlng.lng()}&heading=${elem}`,
-      //             {
-      //               method: "GET",
-      //             }
-      //         )
-      //     ))
-      //     Promise.all(requests)
-      //       .then(responses => {
-      //         console.log(response);
-      //         calculateScore();
-      //       })
-      //       .catch(err => console.error(err));
-      //       setTimeout(10000);
-      // })
       setResponse(res);
       return;
     }
-    console.log(res);
-  });
+  }, [addresses]);
 
   return (
     <LoadScript googleMapsApiKey={`${process.env.REACT_APP_GOOGLE_API_KEY}`}>
@@ -112,7 +86,6 @@ function MapContainer() {
         />
 
         {
-          // (response !== null) &&
           <DirectionsRenderer
             options={response && { directions: response }}
             onLoad={(directionsRenderer) => {
@@ -123,10 +96,8 @@ function MapContainer() {
             }}
           />
         }
-        
 
         {response && waypoints.map((latlng, idx) => {
-          let colorIdx = idx % 3;
           return (<Circle
             key={idx}
             center={{
@@ -148,10 +119,10 @@ function MapContainer() {
               );
             }}
             options={{
-              strokeColor: colours[colorIdx],
+              strokeColor: '#e8953c',
               strokeOpacity: 0.8,
               strokeWeight: 2,
-              fillColor: colours[colorIdx],
+              fillColor: '#e8953c',
               fillOpacity: 0.35}}
           />)
         })}
