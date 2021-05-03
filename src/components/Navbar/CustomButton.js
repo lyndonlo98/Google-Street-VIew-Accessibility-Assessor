@@ -1,21 +1,16 @@
-import React from 'react';
-import { Button } from '@material-ui/core';
+import React, { useContext } from 'react';
+import { AddressContext } from '../../App';
 
-const CustomButton = ({id, icon, text}) => {
-    return (
-      // <Button
-      //   style={{height: '40px'}}
-      //   id={id}
-      //   variant="contained"
-      //   color="primary"
-      //   startIcon={icon}
-      // >
-      //   {text}
-      // </Button>
-      <button className="plan-trip-button">
-        <span>{text}</span>
-      </button>
-    );
+const CustomButton = ({ id, icon, text, source, destination }) => {
+  const { addresses, addressDispatch } = useContext(AddressContext);
+
+  return (
+    <button
+      className="plan-trip-button"
+      onClick={() => addressDispatch({ type: "planTrip", payload: { source, destination } })}>
+      <span>{text}</span>
+    </button>
+  );
 }
 
 export default CustomButton;
