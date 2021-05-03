@@ -8,6 +8,7 @@ import { ReactComponent as BoltIcon } from '../../../icons/cog.svg';
 import { CSSTransition } from 'react-transition-group';
 
 import SearchLocationInput from '../../SearchLocationInput/SearchLocationInput'
+import About from '../../About/About';
 
 const DropdownMenu = () => {
     const [activeMenu, setActiveMenu] = useState('main');
@@ -43,13 +44,11 @@ const DropdownMenu = () => {
           unmountOnExit
           onEnter={calcHeight}>
           <div className="menu">
-            <DropdownItem>My Profile</DropdownItem>
             <DropdownItem
-              leftIcon={<CogIcon />}
+              leftIcon="🙋‍♀️"
               rightIcon={<ChevronIcon />}
-              goToMenu="settings">
-              Settings
-            </DropdownItem>
+              goToMenu="about-me"
+            >About</DropdownItem>
             <DropdownItem
               leftIcon="🎯"
               rightIcon={<ChevronIcon />}
@@ -61,19 +60,20 @@ const DropdownMenu = () => {
         </CSSTransition>
   
         <CSSTransition
-          in={activeMenu === 'settings'}
+          in={activeMenu === 'about-me'}
           timeout={500}
           classNames="menu-secondary"
           unmountOnExit
           onEnter={calcHeight}>
           <div className="menu">
             <DropdownItem goToMenu="main" leftIcon={<ArrowIcon />}>
-              <h2>Settings</h2>
+              <h2>About</h2>
             </DropdownItem>
-            <DropdownItem leftIcon={<BoltIcon />}>HTML</DropdownItem>
+            <About/>
+            {/* <DropdownItem leftIcon={<BoltIcon />}>HTML</DropdownItem>
             <DropdownItem leftIcon={<BoltIcon />}>CSS</DropdownItem>
             <DropdownItem leftIcon={<BoltIcon />}>JavaScript</DropdownItem>
-            <DropdownItem leftIcon={<BoltIcon />}>Awesome!</DropdownItem>
+            <DropdownItem leftIcon={<BoltIcon />}>Awesome!</DropdownItem> */}
           </div>
         </CSSTransition>
   
